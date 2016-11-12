@@ -9,6 +9,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
 
 import model.Claim;
 
@@ -30,6 +32,17 @@ public class GroupAndMap {
 	}
 	
 	
+	static void declarativeCounts(List<Claim> claims) {
+		
+		Map<String, Long> countsByReferringProvider
+        = claims.stream()
+                   .collect(Collectors.groupingBy(Claim::getMemberId,
+                		   Collectors.counting()));
+		System.out
+		.println(countsByReferringProvider);
+	}
+	
+	
 	static void declarativeGroupBy(List<Claim> claims) {
 		System.out
 		.println(claims.stream().collect(groupingBy(Claim::getMemberId, mapping(Claim::getClaimId, toList()))));
@@ -48,6 +61,8 @@ public class GroupAndMap {
 		imperativeGroupBy(claims);
 		
 		declarativeGroupBy(claims);
+		
+		declarativeCounts(claims);
 		
 	}
 	
